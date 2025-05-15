@@ -1,0 +1,310 @@
+﻿{% extends 'master/layout.html' %}
+{% load static %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<style>
+    .student-data-container {
+        max-width: 976px;
+        margin: 50px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .tab-card {
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background: #ffffff;
+        padding: 11px;
+        margin-top: 10px;
+    }
+
+    table {
+        background: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+
+    .table thead {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        padding: 2px;
+        font-size: 10px;
+    }
+
+    th {
+        font-size: 13px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 8px;
+        padding: 3px 11px;
+        font-size: 10px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .filter-form label {
+        margin-right: 5px;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    .filter-form select {
+        margin-right: 15px;
+        font-size: 9px;
+        padding: 1px;
+    }
+
+    h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #333;
+        text-align: center;
+    }
+
+    .content {
+        padding: 13px 26px 18px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 2px;
+    }
+
+    .pagination .step-links a,
+    .pagination .step-links span {
+        margin: 0 4px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    .pagination .step-links .current {
+        background-color: #6c757d;
+    }
+
+    .pagination .step-links a:hover {
+        background-color: #0056b3;
+    }
+
+    .page-link {
+        position: relative;
+        display: block;
+        padding: 1px 5px;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        font-size: 12px;
+    }
+    /* Custom override */
+    .mt-4 {
+        margin-top: -1.5rem !important;
+    }
+    .topbar {
+        background: linear-gradient(135deg, #ff00cc, #3333ff);
+        padding: 12px 12px;
+        color: white;
+        width: calc(100% - 200px); /* Account for sidebar */
+        position: fixed; /* Make topbar fixed */
+        top: 0;
+        left: 200px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        z-index: 1000;
+    }
+
+
+
+
+        .topbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 -24px;
+            white-space: nowrap;
+        }
+
+            .topbar a:hover {
+                text-decoration: underline;
+            }
+    .sidebar {
+        width: 200px;
+        height: 100vh;
+        background: linear-gradient(135deg, #ff00cc, #3333ff);
+        color: white;
+        padding-top: 0px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 8px;
+            display: block;
+            font-weight: 500;
+        }
+</style>
+
+<div class="student-data-container">
+    <h2><i class="fas fa-envelope-open-text" style="color: #007bff; margin-right: 8px;"></i>Sent Messages</h2>
+
+
+    <div class="tab-card">
+        <!-- Filter Form -->
+        <form method="get" class="form-inline filter-form mb-3 justify-content-center">
+            <label>Channel:</label>
+            <select name="channel" class="form-control mx-2">
+                <option value="">All</option>
+                <option value="sms" {% if channel_filter == 'sms' %}selected{% endif %}>SMS</option>
+                <option value="whatsapp" {% if channel_filter == 'whatsapp' %}selected{% endif %}>WhatsApp</option>
+            </select>
+
+            <label>Status:</label>
+            <select name="status" class="form-control mx-2">
+                <option value="">All</option>
+                <option value="delivered" {% if status_filter == 'delivered' %}selected{% endif %}>Delivered</option>
+                <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="failed" {% if status_filter == 'failed' %}selected{% endif %}>Failed</option>
+            </select>
+
+            <label>Department:</label>
+            <select name="department" class="form-control mx-2">
+                <option value="">All</option>
+                {% for dept in departments %}
+                <option value="{{ dept }}" {% if department_filter == dept %}selected{% endif %}>{{ dept }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+
+        <!-- Messages Table -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Subject (ID)</th>
+                        <th>Department</th>
+                        <th>Student</th>
+                        <th>Phone No</th>
+                        <th>Sent through</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for msg in page_obj %}
+                    <tr>
+                        <td>{{ msg.subject }}</td>
+                        <td>{{ msg.department }}</td>
+                        <td>{{ msg.student_name }}</td>
+                        <td>{{ msg.guardian_phone_no }}</td>
+
+                        <td>
+                            {% if msg.send_sms %}
+                                <i class="fas fa-sms" style="color: #007bff;"></i>
+                            {% endif %}
+                            {% if msg.send_whatsapp %}
+                                <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ msg.sent_at|date:"Y-m-d H:i" }}</td>
+
+                        <td>
+                            {% if msg.send_sms %}
+                                {% if msg.sms_status_display == "Delivered" %}
+                                    <i class="fas fa-check-circle" title="SMS Delivered" style="color: green;"></i>
+                                {% else %}
+                                    <i class="fas fa-times-circle" title="SMS Not Delivered" style="color: red;"></i>
+                                {% endif %}
+                            {% endif %}
+                            {% if msg.send_whatsapp %}
+                                {% if msg.whatsapp_status_display == "Delivered" %}
+                                    <i class="fas fa-check-circle" title="WhatsApp Delivered" style="color: green; margin-left: 6px;"></i>
+                                {% else %}
+                                    <i class="fas fa-times-circle" title="WhatsApp Not Delivered" style="color: red; margin-left: 6px;"></i>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if msg.status_display == "Not Delivered" or msg.sms_status_display != "Delivered" or msg.whatsapp_status_display != "Delivered" %}
+                            <a href="{% url 'resend_message' msg.id %}">Resend</a>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No messages found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&channel={{ channel_filter }}&status={{ status_filter }}&department={{ department_filter }}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                    {% elif i >= page_obj.number|add:'-2' and i <= page_obj.number|add:'2' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}&channel={{ channel_filter }}&status={{ status_filter }}&department={{ department_filter }}">{{ i }}</a>
+                        </li>
+                    {% elif i == 1 or i == page_obj.paginator.num_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}&channel={{ channel_filter }}&status={{ status_filter }}&department={{ department_filter }}">{{ i }}</a>
+                        </li>
+                    {% elif i == page_obj.number|add:'-3' or i == page_obj.number|add:'3' %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&channel={{ channel_filter }}&status={{ status_filter }}&department={{ department_filter }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
