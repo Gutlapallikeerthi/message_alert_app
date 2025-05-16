@@ -26,8 +26,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-csrf_trusted_origins = [
-    "https://message-alert-app-cbcwg4g2dffcgxfj.centralindia-01.azurewebsites.net"
+CSRF_TRUSTED_ORIGINS = [
+    'https://message-alert-app-cbcwg4g2dffcgxfj.centralindia-01.azurewebsites.net',
 ]
 
 
