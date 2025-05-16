@@ -57,3 +57,5 @@ webencodings==0.5.1
 wfastcgi==3.0.0
 yarl==1.9.2
 zopfli==0.2.2
+mysqlclient==2.1.1
+
