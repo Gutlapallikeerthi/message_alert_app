@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['alert-app-gnhef4afbtgmdud4.centralindia-01.azurewebsites.net']
+ALLOWED_HOSTS = ['message-alert-app-cbcwg4g2dffcgxfj.centralindia-01.azurewebsites.net']
 
 
 # Application references
