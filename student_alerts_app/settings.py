@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['message-alert-app-cbcwg4g2dffcgxfj.centralindia-01.azurewebsites.net']
+ALLOWED_HOSTS = ['localhost','message-alert-app-cbcwg4g2dffcgxfj.centralindia-01.azurewebsites.net']
 
 
 # Application references
@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'student_alerts_app.urls'
