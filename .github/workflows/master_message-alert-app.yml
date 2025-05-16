@@ -68,4 +68,4 @@ jobs:
         with:
           app-name: 'message-alert-app'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1E7018623A564DA4AB3B17AF7BED2C9B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_21D7FE27CB024939BAE1E73A7A4C079A }}
