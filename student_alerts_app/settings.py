@@ -34,12 +34,13 @@ CSRF_TRUSTED_ORIGINS = [
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = [
-    'message-alert-app-cbcwg4g2dffcgxfj.centralindia-01.azurewebsites.net',
-    '169.254.132.2',
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = ['*']
+# # ALLOWED_HOSTS = [
+#     'message-alert-app-cbcwg4g2dffcgxfj.centralindia-01.azurewebsites.net',
+#     # '169.254.132.2',
+#     'localhost',
+#     '127.0.0.1'
+# ]
 
 
 
